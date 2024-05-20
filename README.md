@@ -1,6 +1,10 @@
 # Tiny Chef
 
-A simple toy system for the 2023 exam of the course PA1417 Basic System Verification at BTH. It currently consists of a backend implemented in Flask and is connected to a MongoDB database. A frontend is anticipated according to the requirements, but not yet implemented.
+[![GitHub](https://img.shields.io/github/license/JulianFrattini/bsv-chef)](./LICENSE)
+
+This repository contains a simple, work-in-progress web-based system for testing purposes.
+It currently consists of a backend implemented in Flask and is connected to a MongoDB database. 
+A frontend is anticipated according to the requirements, but not yet implemented.
 
 test test
 
@@ -8,6 +12,7 @@ test test
 
 This repository is structured as follows:
 
+* .github\workflows\pytest.yml : continuous integration pipeline that runs all tests containing the marker `demo` and `unit`
 * [backend](./backend/): Directory containing the backend
   * [src](./backend/src/): Source code of the backend
   * [test](./backend/test/): Location for all test files
@@ -22,7 +27,7 @@ This repository is structured as follows:
 
 ## Using the System
 
-While not essential for the PA1417 exam, you can [setup](#setup) and [run](#accessing-the-system) the system to familiarize yourself with its functionality.
+You can [setup](#setup) and [run](#accessing-the-system) the system to familiarize yourself with its functionality.
 
 ### Setup
 
@@ -66,3 +71,8 @@ Make sure that
 
 1. your test cases are marked, i.e., they are preceeded by a `@pytest.mark.unit` marker similar to the [demo test case](./backend/test/demo/test_calculate_ingredient_readiness.py), and
 2. you inspect the right step of the Github action, as the action will execute test cases with different markers at different stages.
+
+## License
+
+Copyright © 2023 by Julian Frattini. 
+This work (source code) is available under [GPL 3.0 license](./LICENSE).

@@ -68,7 +68,7 @@ class RecipeController(Controller):
             return readiness
         return None
 
-    def get_readiness_of_recipes(self, recipes: list[dict], available_items: list[dict], diet: Diet) -> dict:
+    def get_readiness_of_recipes(self, recipes: list[dict], diet: Diet) -> dict:
         """Calculate the readiness of each recipe by the available items.
 
         parameters:
@@ -78,8 +78,10 @@ class RecipeController(Controller):
 
         returns:
           readiness -- A dictionary that maps a recipe name (of recipes complying to the dietary restrictions) to a readiness value between 0 and 1 as calculated via calculate_readiness"""
-        recipe_readiness = {}
+        # obtain all available items
+        available_items = self.get_available_items()
 
+        recipe_readiness = {}
         for recipe in recipes:
             readiness = self.get_recipe_readiness(
                 recipe, available_items, diet)
@@ -88,7 +90,7 @@ class RecipeController(Controller):
 
         return recipe_readiness
 
-    def get_recipe(self, diet: Diet, take_best: bool) -> dict:
+    def get_recipe(self, diet: Diet, take_best: bool) -> str:
         """Propose a suitable recipe depending on the diet and the item usage strategy.
 
         parameters:
@@ -96,13 +98,13 @@ class RecipeController(Controller):
           take_best -- Item usage strategy (True = Optimal, False = Random)
 
         returns:
-          recipe -- A recipe in JSON format. The recipe complies to the dietary restrictions. If the usage strategy 'Optimal' has been selected (take_best == True) then the recipe with the highest readiness value as calculated in calculate_readiness will be returned - otherwise a random recipe will be returned."""
+          recipe -- A recipe name. If the usage strategy 'Optimal' has been selected (take_best == True) then the recipe with the highest readiness value as calculated in calculate_readiness will be returned - otherwise a random recipe will be returned.
+          None -- if none of the the recipes has a readiness value of 0.1 or above or no recipe complying to the diet specification is available
+          """
 
-        available_items = self.get_available_items()
-
-        # associate each recipe name with a readiness value
+        # obtain a list of recipes associated to a readiness value
         recipe_readiness = self.get_readiness_of_recipes(
-            recipes=self.recipes, available_items=available_items, diet=diet)
+            recipes=self.recipes, diet=diet)
         if len(recipe_readiness.keys()) == 0: 
             return None
 
@@ -112,11 +114,14 @@ class RecipeController(Controller):
 
         # determine which recipe to return according to the item usage mode
         selected_recipe_index = 0
-        if not take_best:
+        if take_best:
             selected_recipe_index = random.randint(0, len(sorted_recipes)-1)
 
         # determine the recipe name and retrieve the recipe from the list of recipes to return it
         selected_recipe_name: str = sorted_recipes[selected_recipe_index]
-        selected_recipe = [
-            r for r in self.recipes if r['name'] == selected_recipe_name][0]
-        return selected_recipe
+        return selected_recipe_name
+        
+
+    def get_recipe_by_name(self, recipe_name: str) -> dict:
+      selected_recipe = [recipe for recipe in self.recipes if recipe['name'] == recipe_name][0]
+      return selected_recipe

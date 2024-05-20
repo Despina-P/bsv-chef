@@ -55,7 +55,7 @@ These use cases contribute to realizing goal G2 of the [context specification](c
 | Actors | User |
 | Preconditions | At least one item exits in the pantry list |
 | Main Success Scenario | 1. If the user clicks on "Get recipe proposal", a popup window opens where the user can specify dietary restrictions and which *item usage mode* the recipe proposal should use. |
-| | 2. If the user presses "confirm", the system generates a recipe proposal, closes the first popup window, and opens a new popup window with the recipe. |
+| | 2. If the user presses "confirm", the system generates a recipe proposal, closes the first popup window, and opens a new popup window with the recipe and a "Get cooking"-button. |
 | End Condition | A recipe proposal complying to the stated dietary restrictions and *item usage mode* which has a readiness level of at least 10% is displayed. |
 | Extensions | |
 
@@ -63,9 +63,12 @@ These use cases contribute to realizing goal G2 of the [context specification](c
 |---|---|
 | Actors | User |
 | Preconditions | A recipe has been generated and is open in a popup window |
-| Main Success Scenario | 1. If a user presses the "Shop for remaining items" button and at least one of the recipe items is not contained in the current pantry list, generate a shopping list. |
+| Main Success Scenario | 1. If the user presses the "Get cooking"-button and at least one of the recipe items is not contained in the current pantry list, the system shows a "Shop for remaining items"-button below the recipe proposal. |
+| | 2. If a user presses the "Shop for remaining items"-button and the list of missing recipe items contains 3 entries or less, the system shows a shopping list in a new popup window. |
 | End Condition | A list containing the items and amounts necessary to achieve the items on the shopping list when currently having only the items from the pantry list is displayed. |
-| Extensions | If a user presses the "Shop for remaining items" button and none of the recipe items are missing from the current pantry list, the messsage "You already have everythng - get cooking!" is displayed below the button. |
+| Extensions | 1.b If the user presses the "Get cooking"-button and none of the recipe items are missing from the current pantry list, the messsage "You already have everything - get cooking!" is displayed below the recipe proposal. |
+| | 2.b If a user presses the "Shop for remaining items"-button and the list of missing recipe items contains more than 3 items, the system additionally offers to download the list in PDF format. |
+| | 2.c If the user presses the "Shop for remaining items"-button and their account is connected to any supported home delivery service for groceries, the system instead automatically orders the missing recipe items. |
 
 ## Non-functional Requirements
 
@@ -73,4 +76,4 @@ The following non-functional requirements shall be adhered to:
 
 1. The system shall be easily maintainable.
 2. The system shall be accessible to users with all types of color-blindness.
-3. The system shall be reliable.
+3. The system shall be scalable to any number of concurrent users.

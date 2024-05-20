@@ -33,7 +33,8 @@ def create():
         diet: Diet = from_string(data['diet'])
         take_best: bool =  (data['usage_mode'] == 'optimal')
 
-        recipe = controller.get_recipe(diet=diet, take_best=take_best)
+        recipe_name: str = controller.get_recipe(diet=diet, take_best=take_best)
+        recipe: dict = controller.get_recipe_by_name(name=recipe_name)
 
         if recipe == None:
             return jsonify({'recipe': 'No recipe found for this configuration'}), 404
